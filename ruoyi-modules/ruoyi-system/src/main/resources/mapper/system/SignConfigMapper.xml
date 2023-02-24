@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SignConfigMapper">
+    
+    <resultMap type="SignConfig" id="SignConfigResult">
+        <result property="id"    column="id"    />
+        <result property="sid"    column="sid"    />
+        <result property="title"    column="title"    />
+        <result property="estatus"    column="estatus"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedTime"    column="updated_time"    />
+        <result property="sort"    column="sort"    />
+        <result property="replicable"    column="replicable"    />
+    </resultMap>
+
+    <sql id="selectSignConfigVo">
+        select id, sid, title, estatus, created_time, updated_time, sort, replicable from sign_config
+    </sql>
+
+    <select id="selectSignConfigList" parameterType="SignConfig" resultMap="SignConfigResult">
+        <include refid="selectSignConfigVo"/>
+        <where>  
+            <if test="sid != null "> and sid = #{sid}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="estatus != null "> and estatus = #{estatus}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="replicable != null "> and replicable = #{replicable}</if>
+        </where>
+    </select>
+    
+    <select id="selectSignConfigById" parameterType="Long" resultMap="SignConfigResult">
+        <include refid="selectSignConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSignConfig" parameterType="SignConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into sign_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sid != null">sid,</if>
+            <if test="title != null">title,</if>
+            <if test="estatus != null">estatus,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedTime != null">updated_time,</if>
+            <if test="sort != null">sort,</if>
+            <if test="replicable != null">replicable,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sid != null">#{sid},</if>
+            <if test="title != null">#{title},</if>
+            <if test="estatus != null">#{estatus},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="replicable != null">#{replicable},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSignConfig" parameterType="SignConfig">
+        update sign_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sid != null">sid = #{sid},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="estatus != null">estatus = #{estatus},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="replicable != null">replicable = #{replicable},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSignConfigById" parameterType="Long">
+        delete from sign_config where id = #{id}
+    </delete>
+
+    <delete id="deleteSignConfigByIds" parameterType="String">
+        delete from sign_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
